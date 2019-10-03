@@ -17,6 +17,7 @@
 package com.github.nmorel.gwtjackson.shared.advanced;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.github.nmorel.gwtjackson.shared.AbstractTester;
@@ -34,6 +35,11 @@ public final class InheritanceTester extends AbstractTester {
         String getInterfaceProperty();
 
         void setInterfaceProperty( String interfaceProperty );
+
+        @JsonIgnore
+        default String getName() {
+            return "defaultName";
+        }
     }
 
     @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE, getterVisibility = JsonAutoDetect.Visibility.NONE,
@@ -60,6 +66,8 @@ public final class InheritanceTester extends AbstractTester {
 
         private String interfaceProperty;
 
+        private String name;
+
         @Override
         public String getProperty() {
             return property;
@@ -79,6 +87,11 @@ public final class InheritanceTester extends AbstractTester {
         public void setInterfaceProperty( String interfaceProperty ) {
             this.interfaceProperty = interfaceProperty;
         }
+
+        @Override
+        public String getName() {
+            return name;
+        }
     }
 
     public static final InheritanceTester INSTANCE = new InheritanceTester();
@@ -92,6 +105,7 @@ public final class InheritanceTester extends AbstractTester {
         bean.defaultButAnnotated = "defaultOnParent";
         bean.property = "propertyOnChild";
         bean.interfaceProperty = "propertyOnInterface";
+        bean.name = "name";
 
         String expected = "{\"parentProperty\":\"propertyOnChild\"," +
                 "\"protectedField\":\"protectedOnParent\"," +
